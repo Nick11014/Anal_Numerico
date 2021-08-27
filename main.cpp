@@ -5,12 +5,19 @@
 #include <iomanip>
 using namespace std;
 
-//cbrt(x) Raiz cubica de x
+//cbrt(x)                  :Raiz cubica de x
+
+//expoencial exp(x)        :Numero de euler elevado a x
+//Exemplo: x = 2*x;
+//         return exp(x);
+
+//pow(2.7182818, (2*x)     :Potencia
+
 
 // Function to calculate f(x)
 float func(float x)
-{
-    return exp(2*x);
+{   x = pow(x, (2));
+    return exp(x);
 } 
 
 // Function for approximate integral
@@ -132,6 +139,129 @@ float simpsons_(float ll, float ul, int n, int p)
     return res;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+float trapezio(float ll, float ul, float n, int p)
+{
+    // Array for storing value of x and f(x)
+    float x[10], fx[10];
+
+    // Calculando h
+    float h = (ul-ll)/n;
+    
+    //Declarando soma
+    float s = 0;
+
+    // Calculating values of x and f(x)
+    for (int i = 0; i <= n; i++)
+    { 
+        x[i] = roundf( (ll + i * h) * p ) / p;
+        fx[i] = roundf( func(x[i]) * p ) / p;
+        if(i == 0 || i == n){
+            // Computing sum of first and last terms
+            // in above formula
+            s += fx[i];
+        }
+    }
+
+    // Adding middle terms in above formula
+    for (int i = 1; i < n; i++)
+        s += 2*fx[i];
+ 
+    // h/2 indicates (b-a)/2n. Multiplying h/2
+    // with s.
+    s = roundf((h*s) * p ) / p;
+    float Final_Result = roundf((s/2) * p ) / p;
+    int c = 0;
+
+    std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
+    std::cout << "Tabela:" << std::endl;
+
+    for(int i = 0; i < (n+1); i++){ 
+        if(i==0 || i == n){
+            c=1;
+        }else{
+            c=2;
+        }
+        std::cout << "i" << i << " = " << i;
+        std::cout << "           X" << i << " = " << x[i]; 
+        std::cout << "           Y" << i << " = " << fx[i];
+        std::cout << "           C" << i << " = " << c;
+        std::cout << "           Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+    }
+
+    std::cout <<"O valor de h e: "<< h << "\n";
+    std::cout << "O valor da integracao e: " << Final_Result << "\n\n";
+
+    std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
+
+    std::cout << "CALCULO DO H: " << "\n\n";
+    std::cout << "(" << ul <<"-" << ll <<")"<<"\n";
+    std::cout << "-----------------" <<"   =  " << h << "\n";
+    std::cout <<"    " << n <<"\n\n\n\n";
+
+    std::cout << "CALCULO DO RESULTADO FINAL(INTEGRACAO): " << "\n";
+    cout << "\n";
+    cout << "Formula: " << "\n";
+    cout << "h/2" << "( ";
+    for (int i = 0; i <= n; i++)
+    {
+        if (i == 0){
+            cout << "fx[" << i << "]" << " + ";
+        }
+        else if(i == n){
+            cout << "fx[" << i << "]";
+        }
+        else{
+            cout << "2*fx[" << i << "]" << " + ";
+        }
+    }
+    cout << " )" << "\n\n";
+    
+    cout << h << "/2" << "( ";
+    for (int i = 0; i <= n; i++)
+    {
+        if (i == 0){
+            cout << fx[i] << " + ";
+        }
+        else if(i == n){
+            cout << fx[i];
+        }
+        else{
+            cout << "2*" <<fx[i]<< " + ";
+        }
+    }
+    cout << " )" << "\n";
+
+    cout << h/2 << "( ";
+    for (int i = 0; i <= n; i++)
+    {
+        if (i == 0){
+            cout << fx[i] << " + ";
+        }
+        else if(i == n){
+            cout << fx[i];
+        }
+        else{
+            cout << 2*fx[i] << " + ";
+        }
+    }
+    cout << " )" <<" = "<< Final_Result << "\n\n";
+
+    return (h/2)*s;
+}
+
 // Driver program
 int main()
 {
@@ -148,19 +278,17 @@ int main()
     cout << "Entre precisao: ";
     cin >> p;
 
+    p = pow(10, (p));
     char type;
-    cout << "\n" <<"Qual programa sera utilizado ?: " << "\n\n" << "1: 1/3 de simpson" << "\n";
+    cout << "\n" <<"Qual programa sera utilizado ?: " << "\n\n" << "1: 1/3 de simpson" << "\n" << "2: Trapezio" << "\n";
   std::cin >> type;
   switch (type) {
     case '1':
       simpsons_(lower_limit, upper_limit, n, p);
       break;
-    // case 's':
-    //   std::cout << testCountSquare(new RightSquare(-2, -2, 4));
-    //   break;
-    // case 'e':
-    //   std::cout << hasEqualFigures();
-    //   break;
+    case '2':
+      trapezio(lower_limit, upper_limit, n, p);
+      break;
     default: std::cerr << "Invalid type\n";
   }
 
