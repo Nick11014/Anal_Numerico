@@ -10,11 +10,11 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
-    return exp(2*x);
+    return cbrt(x);
 } 
 
 // Function for approximate integral
-float simpsons_(float ll, float ul, int n, int p)
+float simpsons_(float ll, float ul, int n, int p, int manualWay)
 {
     // Calculating the value of h
     float h = (ul - ll) / n;
@@ -22,11 +22,21 @@ float simpsons_(float ll, float ul, int n, int p)
     // Array for storing value of x and f(x)
     float x[10], fx[10];
 
-    // Calculating values of x and f(x)
-    for (int i = 0; i <= n; i++)
-    {
-        x[i] = ll + i * h;
-        fx[i] = func(x[i]);
+    if(manualWay == 0) {
+        // Calculating values of x and f(x)
+        for (int i = 0; i <= n; i++)
+        {
+            x[i] = roundf((ll + i * h) * p) / p;
+            fx[i] = roundf((func(x[i])) * p) / p;
+        }
+    }
+    else if(manualWay == 1) {
+        // Reading points
+        for (int i = 0; i <= n; i++)
+        {
+            cout << "Ponto " << i << ": ";
+            cin >> x[i] >> fx[i];
+        }
     }
 
     // Calculating result
@@ -34,15 +44,14 @@ float simpsons_(float ll, float ul, int n, int p)
     for (int i = 0; i <= n; i++)
     {
         if (i == 0 || i == n)
-            res += fx[i];
+            res += (roundf(fx[i] * p) / p);
         else if (i % 2 != 0)
-            res += 4 * fx[i];
+            res += (roundf((4 * fx[i]) * p) / p);
         else
-            res += 2 * fx[i];
+            res += (roundf((2 * fx[i]) * p) / p);
     }
-    res = res * (h / 3);
-
-    cout << fixed << setprecision(p);
+    res = (roundf(res * p) / p) * (roundf((h / 3) * p) / p);
+    res = (roundf(res * p) / p);
 
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
@@ -139,21 +148,25 @@ int main()
     float upper_limit = 0; // Upper limit
     int n = 0;               // Number of interval
     int p = 0;
+    int manualWay = 0;
     cout << "Entre limite inferior de integracao: ";
     cin >> lower_limit;
     cout << "Entre superior inferior de integracao: ";
     cin >> upper_limit;
     cout << "Entre numero de sub intervalos: ";
     cin >> n;
-    cout << "Entre precisao: ";
+    cout << "Precisao de casas decimais: ";
     cin >> p;
+    cout << "Modo manual(true = 1 or false = 0): ";
+    cin >> manualWay;
 
+    p = pow(10, (p));
     char type;
     cout << "\n" <<"Qual programa sera utilizado ?: " << "\n\n" << "1: 1/3 de simpson" << "\n";
   std::cin >> type;
   switch (type) {
     case '1':
-      simpsons_(lower_limit, upper_limit, n, p);
+      simpsons_(lower_limit, upper_limit, n, p, manualWay);
       break;
     // case 's':
     //   std::cout << testCountSquare(new RightSquare(-2, -2, 4));
