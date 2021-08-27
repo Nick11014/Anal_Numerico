@@ -21,7 +21,7 @@ float func(float x)
 } 
 
 // Function for approximate integral
-float simpsons_(float ll, float ul, int n, int p, int manualWay)
+float simpson_(float ll, float ul, int n, int p, int manualWay)
 {
     // Calculating the value of h
     float h = (ul - ll) / n;
@@ -307,14 +307,18 @@ int main()
 
     p = pow(10, (p));
     char type;
-    cout << "\n" <<"Qual programa sera utilizado ?: " << "\n\n" << "1: 1/3 de simpson" << "\n" << "2: Trapezio" << "\n";
+    cout << "\n" <<"Qual programa sera utilizado ?: " << "\n\n" << "1: 1/3 de simpson" << "\n" 
+    << "2: Trapezio" << "\n" << "3: 3/8 de simpsons";
   std::cin >> type;
   switch (type) {
     case '1':
-      simpsons_(lower_limit, upper_limit, n, p, manualWay);
+      simpson_(lower_limit, upper_limit, n, p, manualWay);
       break;
     case '2':
       trapezio(lower_limit, upper_limit, n, p,manualWay);
+      break;
+    case '3':
+    //   simpsons(lower_limit, upper_limit, n, p,manualWay);
       break;
     default: std::cerr << "Invalid type\n";
   }
