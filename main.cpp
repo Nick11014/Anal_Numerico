@@ -161,7 +161,7 @@ float simpsons_(float ll, float ul, int n, int p, int manualWay)
 
 
 
-float trapezio(float ll, float ul, float n, int p)
+float trapezio(float ll, float ul, float n, int p,int manualWay)
 {
     // Array for storing value of x and f(x)
     float x[10], fx[10];
@@ -173,14 +173,29 @@ float trapezio(float ll, float ul, float n, int p)
     float s = 0;
 
     // Calculating values of x and f(x)
-    for (int i = 0; i <= n; i++)
-    { 
-        x[i] = roundf( (ll + i * h) * p ) / p;
-        fx[i] = roundf( func(x[i]) * p ) / p;
-        if(i == 0 || i == n){
-            // Computing sum of first and last terms
-            // in above formula
-            s += fx[i];
+
+    if(manualWay == 0) {
+        // Calculating values of x and f(x)
+        for (int i = 0; i <= n; i++)
+        { 
+            x[i] = roundf( (ll + i * h) * p ) / p;
+            fx[i] = roundf( func(x[i]) * p ) / p;
+            if(i == 0 || i == n){
+                // Computing sum of first and last terms
+                // in above formula
+                s += fx[i];
+            }
+        }
+    }
+    else if(manualWay == 1) {
+        // Reading points
+        for (int i = 0; i <= n; i++)
+        {
+            cout << "Ponto " << i << ": ";
+            cin >> x[i] >> fx[i];
+            if(i == 0 || i == n){
+                s += fx[i];
+            }
         }
     }
 
@@ -299,7 +314,7 @@ int main()
       simpsons_(lower_limit, upper_limit, n, p, manualWay);
       break;
     case '2':
-      trapezio(lower_limit, upper_limit, n, p);
+      trapezio(lower_limit, upper_limit, n, p,manualWay);
       break;
     default: std::cerr << "Invalid type\n";
   }
