@@ -16,18 +16,28 @@ using namespace std;
 //         return exp(x);
 
 //pow(2.7182818, (2*x)     :Potencia
+//0.03*pow(x, 3)-2*x+8*sin(x + 2);
 
 
 // Function to calculate f(x)
 float func(float x)
 {
-    return 0.03*pow(x, 3)-2*x+8*sin(x + 2);
+    return pow(x,3)-(2*x)-5;
 } 
 
 // Função para realizar modulo.
 double modulo(double x) {
   if (x < 0) return (-x);
   else return x;
+}
+
+double derivada(double x) {
+    return 3*pow(x,2)-2;
+}
+
+
+double derivada2(double x) {
+    return 6*x;
 }
 
 // Function for approximate integral
@@ -843,6 +853,100 @@ void pegaso (float a, float b, int p, int precision) {
     }
 }
 
+void halley(double p, int precision){
+  double epsilon = 10e-5;
+  double toler = 0.00001;
+  double deltaX = 1+toler;
+  int iter_max = 10;
+  int iter = 0;
+
+  double raiz = 0;
+
+  std::cout << "k\tx_k\t\tFx_k\t\tDfx_k\t\tdeltaX_k" << std::endl;
+  std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+  std::cout.precision(precision);
+  std::cout.setf(std::ios::fixed);
+
+  double x = 2;
+  double fx = 0;
+  double dfx = 0;
+  double dfx2 = 0;
+
+  while(1) {
+    fx = func(x);
+    fx = roundf(fx * p) / p;
+    dfx = derivada(x);
+    dfx = roundf(dfx * p) / p;
+    dfx2 = derivada2(x);
+    dfx2 = roundf(dfx2 * p) / p;
+    deltaX = (2*fx*dfx)/(2*dfx*dfx - fx*dfx2);
+
+    std::cout << iter << " \t" << x << " \t" << fx << " \t" << dfx << " \t" << deltaX << std::endl;
+
+    if (((modulo(deltaX)<= toler) && (modulo(fx) <= toler)) || (modulo(dfx) < epsilon) ||(iter >= iter_max)) break;
+
+    x -= deltaX;
+    x = roundf(x*p) / p;
+
+    iter++;
+  }
+
+  raiz = x;
+
+  if ((modulo(deltaX) <= toler) && (modulo(fx) <= toler)) {
+    std::cout << "Raiz encontrada: " << raiz << std::endl;
+    std::cout << "Numero de iteracoes: " << iter << std::endl;
+  }
+  else {
+    std::cout << "A raiz nao pode ser encontrada." << std::endl;
+  }
+}
+
+void newtowRaphson(double p, int precision){
+  double epsilon =10e-5;
+  double toler = 0.00001;
+  double deltaX = 1+toler;
+  int iter_max = 10;
+  int iter = 0;
+
+  double raiz = 0;
+
+  std::cout << "k\tx_k\t\tFx_k\t\tDfx_k\t\tdeltaX_k" << std::endl;
+  std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+  std::cout.precision(precision-1);
+  std::cout.setf(std::ios::fixed);
+
+  double x = 2;
+  double fx = 0;
+  double dfx = 0;
+
+  while(1) {
+    fx = func(x);
+    fx = roundf(fx * p) / p;
+    dfx = derivada(x);
+    dfx = roundf(dfx * p) / p;
+    deltaX = fx/dfx;
+
+    std::cout << iter << " \t" << x << " \t" << fx << " \t" << dfx << " \t" << deltaX << std::endl;
+
+    if (((modulo(deltaX)<= toler) && (modulo(fx) <= toler)) || (modulo(dfx) < epsilon) ||(iter >= iter_max)) break;
+
+    x -= deltaX;
+    x = roundf(x*p) / p;
+    iter++;
+  }
+
+  raiz = x;
+
+  if ((modulo(deltaX) <= toler) && (modulo(fx) <= toler)) {
+    std::cout << "Raiz encontrada: " << raiz << std::endl;
+    std::cout << "Numero de iteracoes: " << iter << std::endl;
+  }
+  else {
+    std::cout << "A raiz nao pode ser encontrada." << std::endl;
+  }
+}
+
 // Driver program
 int main()
 {
@@ -890,7 +994,7 @@ int main()
             simpsons(lower_limit, upper_limit, n, p,manualWay, precision);
             break;
         case '4':
-            gaussLegendre(lower_limit, upper_limit, n, p,manualWay, precision);           
+            gaussLegendre(lower_limit, upper_limit, n, p,manualWay, precision);
             break;
         case '5':
             bissecao(lower_limit, upper_limit, p, precision);
