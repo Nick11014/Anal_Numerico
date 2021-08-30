@@ -29,7 +29,7 @@ double modulo(double x) {
 }
 
 // Function for approximate integral
-float simpson_(float ll, float ul, int n, int p, int manualWay)
+float simpson_(float ll, float ul, int n, int p, int manualWay, int precision)
 {
     // Calculating the value of h
     float h = (ul - ll) / n;
@@ -80,19 +80,25 @@ float simpson_(float ll, float ul, int n, int p, int manualWay)
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
     int c = 0;
+    cout << "i\t\tx(i)\t\ty(i)\t\tc(i)\t\ty(i)c(i)\n";
+    cout << "-----------------------------------------------------------------------------\n";
     for(int i = 0; i < (n+1); i++){ 
         if(i==0 || i == n){
             c=1;
-        }else if(i%2==0){
+        }else if(i%3==0){
             c=2;
         }else{
-            c=4;
+            c=3;
         }
         std::cout << "i" << i << " = " << i;
-        std::cout << "           X" << i << " = " << x[i]; 
-        std::cout << "           Y" << i << " = " << fx[i];
-        std::cout << "           C" << i << " = " << c;
-        std::cout << "           Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+        std::cout.precision(precision);
+        cout.setf(ios::fixed);
+        cout.setf(ios::showpoint);
+        std::cout << "\t\t" << "X" << i << " = " << x[i]; 
+        std::cout << "\t" << "Y" << i << " = " << fx[i];
+        std::cout << "\t" << "C" << i << " = " << c;
+        std::cout << "\t\t" << "Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+        cout << noshowpoint;
     }
 
     std::cout <<"O valor de h e: "<< h << "\n";
@@ -173,7 +179,7 @@ float simpson_(float ll, float ul, int n, int p, int manualWay)
 }
 
 
-float simpsons(float ll, float ul, int n, int p, int manualWay)
+float simpsons(float ll, float ul, int n, int p, int manualWay, int precision)
 {
     // Calculating the value of h
     float h = roundf(((ul - ll) / n) * p) / p;
@@ -226,6 +232,8 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
     int c = 0;
+    cout << "i\t\tx(i)\t\ty(i)\t\tc(i)\t\ty(i)c(i)\n";
+    cout << "-----------------------------------------------------------------------------\n";
     for(int i = 0; i < (n+1); i++){ 
         if(i==0 || i == n){
             c=1;
@@ -235,10 +243,14 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
             c=3;
         }
         std::cout << "i" << i << " = " << i;
-        std::cout << "           X" << i << " = " << x[i]; 
-        std::cout << "           Y" << i << " = " << fx[i];
-        std::cout << "           C" << i << " = " << c;
-        std::cout << "           Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+        std::cout.precision(precision);
+        cout.setf(ios::fixed);
+        cout.setf(ios::showpoint);
+        std::cout << "\t\t" << "X" << i << " = " << x[i]; 
+        std::cout << "\t" << "Y" << i << " = " << fx[i];
+        std::cout << "\t" << "C" << i << " = " << c;
+        std::cout << "\t\t" << "Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+        cout << noshowpoint;
     }
 
     std::cout <<"O valor de h e: "<< h << "\n";
@@ -318,8 +330,13 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
     return res;
 }
 
+<<<<<<< Updated upstream
 float trapezio(float ll, float ul, float n, int p,int manualWay)
 {   
+=======
+float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
+{
+>>>>>>> Stashed changes
     // Array for storing value of x and f(x)
     float x[30], fx[30];
 
@@ -378,18 +395,25 @@ float trapezio(float ll, float ul, float n, int p,int manualWay)
 
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
-
+    cout << "i\t\tx(i)\t\ty(i)\t\tc(i)\t\ty(i)c(i)\n";
+    cout << "-----------------------------------------------------------------------------\n";
     for(int i = 0; i < (n+1); i++){ 
         if(i==0 || i == n){
             c=1;
-        }else{
+        }else if(i%3==0){
             c=2;
+        }else{
+            c=3;
         }
         std::cout << "i" << i << " = " << i;
-        std::cout << "           X" << i << " = " << x[i]; 
-        std::cout << "           Y" << i << " = " << fx[i];
-        std::cout << "           C" << i << " = " << c;
-        std::cout << "           Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+        std::cout.precision(precision);
+        cout.setf(ios::fixed);
+        cout.setf(ios::showpoint);
+        std::cout << "\t\t" << "X" << i << " = " << x[i]; 
+        std::cout << "\t" << "Y" << i << " = " << fx[i];
+        std::cout << "\t" << "C" << i << " = " << c;
+        std::cout << "\t\t" << "Y" << i << "*"<< "C"<< i << " = " << fx[i]*c << "\n\n";
+        cout << noshowpoint;
     }
 
     std::cout <<"O valor de h e: "<< h << "\n";
@@ -479,13 +503,15 @@ int main()
     cout << "Modo manual(true = 1 or false = 0): ";
     cin >> manualWay;
 
+    int precision = p;
     p = pow(10, (p));
     char type;
-    cout << "\n" <<"Qual programa sera utilizado ?: " << "\n\n" << "1: 1/3 de simpson" << "\n" 
-    << "2: Trapezio" << "\n" << "3: 3/8 de simpsons";
+    cout << "\n" <<"Qual programa sera utilizado ? " << "\n\n" << "1: 1/3 de simpson" << "\n" 
+    << "2: Trapezio" << "\n" << "3: 3/8 de simpsons" << "\n";
   std::cin >> type;
   switch (type) {
     case '1':
+<<<<<<< Updated upstream
         simpson_(lower_limit, upper_limit, n, p, manualWay);
         break;
     case '2':
@@ -494,6 +520,16 @@ int main()
     case '3':
         simpsons(lower_limit, upper_limit, n, p,manualWay);
          break;
+=======
+      simpson_(lower_limit, upper_limit, n, p, manualWay, precision);
+      break;
+    case '2':
+      trapezio(lower_limit, upper_limit, n, p,manualWay, precision);
+      break;
+    case '3':
+      simpsons(lower_limit, upper_limit, n, p,manualWay, precision);
+      break;
+>>>>>>> Stashed changes
     default: std::cerr << "Invalid type\n";
   }
 
