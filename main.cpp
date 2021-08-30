@@ -22,7 +22,7 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
-    return pow(x,3)-(2*x)-5;
+    return (x*x*x)-2*x-5;
 } 
 
 // Função para realizar modulo.
@@ -854,7 +854,7 @@ void pegaso (float a, float b, int p, int precision) {
 }
 
 void halley(double p, int precision){
-  double epsilon = 10e-5;
+  double epsilon = 2.2204e-16;
   double toler = 0.00001;
   double deltaX = 1+toler;
   int iter_max = 10;
@@ -903,7 +903,7 @@ void halley(double p, int precision){
 }
 
 void newtowRaphson(double p, int precision){
-  double epsilon =10e-5;
+  double epsilon =2.2204e-16;
   double toler = 0.00001;
   double deltaX = 1+toler;
   int iter_max = 10;
@@ -947,6 +947,70 @@ void newtowRaphson(double p, int precision){
   }
 }
 
+void regulaFalsi(float a, float b, int p, int precision) {
+
+  double a0 = a;
+  double b0 = b;
+  double toler = 1e-3;
+  int iter_max = 10;
+
+  double x = 0;
+  int iter = 0;
+  double raiz = 0;
+
+  double fa = func(a);
+  double fb = func(b);
+  double fx = 0;
+
+  double deltaX = 0;
+
+  if (func(a)*func(b) > 0) {
+		std::cout << "funcao nao muda de sinal neste intervalo" << std::endl;
+		system("PAUSE");
+		exit(0);
+	}
+
+  std::cout << "iter\ta\t\tFa\t\tb\t\tFb\t\tx\t\tFx\t\tdeltaX" << std::endl;
+  std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+  std::cout.precision(precision-1);
+  std::cout.setf(std::ios::fixed);
+
+  while(1) {
+    deltaX = fb*(b-a)/(fb-fa);
+    deltaX = roundf(deltaX * p) / p;
+    x = b - deltaX;
+    x = roundf(x * p) / p;
+    fx = func(x);
+    fx = roundf(fx * p) / p;
+    std::cout << iter << " \t" << a << " \t" << fa << " \t" << b << " \t" << fb << " \t" << x << " \t" << fx << " \t" << deltaX << std::endl;
+
+    if (((modulo(deltaX)<= toler) && (modulo(fx) <= toler)) || (iter >= iter_max))
+      break;
+
+    if (fb*fx < 0) {
+      a = roundf(b * p) / p;
+      fa = roundf(fb * p) / p;
+    }
+    b = x;
+    b = roundf(b * p) / p;
+    fb = fx;
+    fb = roundf(fb * p) / p;
+    iter++;
+  }
+
+  raiz = x;
+
+  if ((modulo(deltaX) <= toler) && (modulo(fx) <= toler)) {
+    std::cout << "Raiz encontrada: " << raiz << std::endl;
+    std::cout << "Numero de iteracoes: " << iter << std::endl;
+  }
+  else {
+    std::cout << "A raiz nao pode ser encontrada." << std::endl;
+  }
+  system("PAUSE");
+}
+
+
 // Driver program
 int main()
 {
@@ -980,7 +1044,9 @@ int main()
     << "6: Secante" << "\n"
     << "7: Pegaso" << "\n"
     << "8: Halley" << "\n"
-    << "9: Newton-Raphson" << "\n\n";
+    << "9: Newton-Raphson" << "\n"
+    << "a: Shroder" << "\n"
+    << "b: Regula Falsi" << "\n\n";
 
     std::cin >> type;
     switch (type) {
@@ -1010,6 +1076,12 @@ int main()
             break;
         case '9':
             newtowRaphson(p, precision);
+            break;
+        case 'a':
+            shroder(p, precision);
+            break;
+        case 'b':
+            regulaFalsi(lower_limit, upper_limit, p, precision);
             break;
         default: std::cerr << "Invalid type\n";        
     }
