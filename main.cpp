@@ -951,7 +951,6 @@ void newtowRaphson(double p, int precision){
   }
 }
 
-<<<<<<< Updated upstream
 void regulaFalsi(float a, float b, int p, int precision) {
 
   double a0 = a;
@@ -1000,7 +999,9 @@ void regulaFalsi(float a, float b, int p, int precision) {
     b = roundf(b * p) / p;
     fb = fx;
     fb = roundf(fb * p) / p;
-=======
+  }
+}
+
 void shroder(double p, int precision) {
     // ALTERE AS VARIAVEIS A SEGUIR -----------------------------------------------------------------------------------------------------------------
 
@@ -1042,7 +1043,6 @@ void shroder(double p, int precision) {
     x -= deltaX;
     x = roundf(x*p) / p;
 
->>>>>>> Stashed changes
     iter++;
   }
 
@@ -1055,15 +1055,8 @@ void shroder(double p, int precision) {
   else {
     std::cout << "A raiz nao pode ser encontrada." << std::endl;
   }
-<<<<<<< Updated upstream
-  system("PAUSE");
 }
 
-
-=======
-}
-
->>>>>>> Stashed changes
 // Driver program
 int main()
 {
@@ -1133,15 +1126,9 @@ int main()
         case 'a':
             shroder(p, precision);
             break;
-<<<<<<< Updated upstream
         case 'b':
             regulaFalsi(lower_limit, upper_limit, p, precision);
             break;
-=======
-         case 'b':
-            shroder(p, precision);
-            break;    
->>>>>>> Stashed changes
         default: std::cerr << "Invalid type\n";        
     }
 
