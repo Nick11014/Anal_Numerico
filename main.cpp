@@ -5,6 +5,8 @@
 #include <iomanip>
 using namespace std;
 
+#define PI 3.1415926535897932384626433832795
+
 //cbrt(x)                  :Raiz cubica de x
 
 //expoencial exp(x)        :Numero de euler elevado a x
@@ -17,12 +19,14 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
-    x = (-pow(x,2)/2);
-    x = exp(x);
-    float temp = 2 * 3.1415;
-    float aux = pow(temp, 0.5);
-    return x / aux;
+    return exp(x*x);
 } 
+
+// Função para realizar modulo.
+double modulo(double x) {
+  if (x < 0) return (-x);
+  else return x;
+}
 
 // Function for approximate integral
 float simpson_(float ll, float ul, int n, int p, int manualWay)
@@ -31,7 +35,7 @@ float simpson_(float ll, float ul, int n, int p, int manualWay)
     float h = (ul - ll) / n;
 
     // Array for storing value of x and f(x)
-    float x[10], fx[10];
+    float x[30], fx[30];
 
     if(manualWay == 0) {
         // Calculating values of x and f(x)
@@ -61,8 +65,17 @@ float simpson_(float ll, float ul, int n, int p, int manualWay)
         else
             res += (roundf((2 * fx[i]) * p) / p);
     }
-    res = (roundf(res * p) / p) * (roundf((h / 3) * p) / p);
+    res = (roundf(res * p) / p) * (h / 3);
     res = (roundf(res * p) / p);
+
+    //Calculando fator erro
+    const int N = n;
+    float fator_erro = 0;
+
+    float valor_sup = (-1)*(ul - ll)*(ul - ll)*(ul - ll)*(ul - ll)*(ul - ll);
+    float valor_inf = (180*n*n*n*n);
+
+    fator_erro = valor_sup/valor_inf;
 
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
@@ -83,7 +96,9 @@ float simpson_(float ll, float ul, int n, int p, int manualWay)
     }
 
     std::cout <<"O valor de h e: "<< h << "\n";
-    std::cout << "O valor da integracao e: " << res << "\n\n";
+    std::cout << "O valor da integracao e: " << res << "\n";
+    std::cout << "Fator erro: " << fator_erro << endl << endl;
+    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA NO PONTO THETA PARA ACHAR O ERRO!!\n\n\n";
 
     std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
 
@@ -91,6 +106,11 @@ float simpson_(float ll, float ul, int n, int p, int manualWay)
     std::cout << "(" << ul <<"-" << ll <<")"<<"\n";
     std::cout << "-----------------" <<"   =  " << h << "\n";
     std::cout <<"    " << n <<"\n\n\n\n";
+
+    std::cout << "CALCULO DO FATOR ERRO: " << "\n\n";
+    std::cout << "\t" << "(-1)*(" << ul <<"-" << ll <<")^(5)"<<"\n";
+    std::cout << "\t" << "-----------------" <<"   =  " << fator_erro << "\n";
+    std::cout << "\t" << "180*" << n << "^(4)" <<"\n\n\n\n";
 
     std::cout << "CALCULO DO RESULTADO FINAL(INTEGRACAO): " << "\n";
     cout << "\n";
@@ -159,7 +179,7 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
     float h = roundf(((ul - ll) / n) * p) / p;
 
     // Array for storing value of x and f(x)
-    float x[10], fx[10], cy[10];
+    float x[30], fx[30], cy[30];
 
     if(manualWay == 0) {
         // Calculating values of x and f(x)
@@ -194,6 +214,15 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
     float res = 0;
     res = (roundf((( 3 * interval_size / 8 ) * sum) * p) / p);
 
+    //Calculando fator erro
+    const int N = n;
+    float fator_erro = 0;
+
+    float valor_sup = (-1)*(ul - ll)*(ul - ll)*(ul - ll)*(ul - ll)*(ul - ll);
+    float valor_inf = (80*n*n*n*n);
+
+    fator_erro = valor_sup/valor_inf;
+
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
     int c = 0;
@@ -213,7 +242,9 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
     }
 
     std::cout <<"O valor de h e: "<< h << "\n";
-    std::cout << "O valor da integracao e: " << res << "\n\n";
+    std::cout << "O valor da integracao e: " << res << "\n";
+    std::cout << "Fator erro: " << fator_erro << endl << endl;
+    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA NO PONTO THETA PARA ACHAR O ERRO!!\n\n\n";
 
     std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
 
@@ -221,6 +252,11 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
     std::cout << "(" << ul <<"-" << ll <<")"<<"\n";
     std::cout << "-----------------" <<"   =  " << h << "\n";
     std::cout <<"    " << n <<"\n\n\n\n";
+
+    std::cout << "CALCULO DO FATOR ERRO: " << "\n\n";
+    std::cout << "\t" << "(-1)*(" << ul <<"-" << ll <<")^(5)"<<"\n";
+    std::cout << "\t" << "-----------------" <<"   =  " << fator_erro << "\n";
+    std::cout << "\t" << "80*" << n << "^(4)" <<"\n\n\n\n";
 
     std::cout << "CALCULO DO RESULTADO FINAL(INTEGRACAO): " << "\n";
     cout << "\n";
@@ -283,9 +319,9 @@ float simpsons(float ll, float ul, int n, int p, int manualWay)
 }
 
 float trapezio(float ll, float ul, float n, int p,int manualWay)
-{
+{   
     // Array for storing value of x and f(x)
-    float x[10], fx[10];
+    float x[30], fx[30];
 
     // Calculando h
     float h = (ul-ll)/n;
@@ -330,6 +366,16 @@ float trapezio(float ll, float ul, float n, int p,int manualWay)
     float Final_Result = roundf((s/2) * p ) / p;
     int c = 0;
 
+
+    //Calculando fator erro
+    const int N = n;
+    float fator_erro = 0;
+
+    float valor_sup = (-1)*(ul - ll)*(ul - ll)*(ul - ll);
+    float valor_inf = (12*n*n);
+
+    fator_erro = valor_sup/valor_inf;
+
     std::cout << "      ************************|RESULTADOS|************************" << "\n\n";
     std::cout << "Tabela:" << std::endl;
 
@@ -347,14 +393,21 @@ float trapezio(float ll, float ul, float n, int p,int manualWay)
     }
 
     std::cout <<"O valor de h e: "<< h << "\n";
-    std::cout << "O valor da integracao e: " << Final_Result << "\n\n";
+    std::cout << "O valor da integracao e: " << Final_Result << "\n";
+    std::cout << "Fator erro: " << fator_erro << endl << endl;
+    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA NO PONTO THETA PARA ACHAR O ERRO!!\n\n\n";
 
     std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
 
     std::cout << "CALCULO DO H: " << "\n\n";
-    std::cout << "(" << ul <<"-" << ll <<")"<<"\n";
-    std::cout << "-----------------" <<"   =  " << h << "\n";
-    std::cout <<"    " << n <<"\n\n\n\n";
+    std::cout << "\t" << "(" << ul <<"-" << ll <<")"<<"\n";
+    std::cout << "\t" << "-----------------" <<"   =  " << h << "\n";
+    std::cout << "\t" << n <<"\n\n\n\n";
+
+    std::cout << "CALCULO DO FATOR ERRO: " << "\n\n";
+    std::cout << "\t" << "(-1)*(" << ul <<"-" << ll <<")^(3)"<<"\n";
+    std::cout << "\t" << "-----------------" <<"   =  " << fator_erro << "\n";
+    std::cout << "\t" << "12*" << n << "^(2)" <<"\n\n\n\n";
 
     std::cout << "CALCULO DO RESULTADO FINAL(INTEGRACAO): " << "\n";
     cout << "\n";
@@ -433,14 +486,14 @@ int main()
   std::cin >> type;
   switch (type) {
     case '1':
-      simpson_(lower_limit, upper_limit, n, p, manualWay);
-      break;
+        simpson_(lower_limit, upper_limit, n, p, manualWay);
+        break;
     case '2':
-      trapezio(lower_limit, upper_limit, n, p,manualWay);
-      break;
+        trapezio(lower_limit, upper_limit, n, p,manualWay);
+        break;
     case '3':
-      simpsons(lower_limit, upper_limit, n, p,manualWay);
-      break;
+        simpsons(lower_limit, upper_limit, n, p,manualWay);
+         break;
     default: std::cerr << "Invalid type\n";
   }
 
