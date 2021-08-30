@@ -21,7 +21,11 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
+<<<<<<< Updated upstream
     return cbrt(x);
+=======
+    return 0.03*pow(x, 3)-2*x+8*sin(x + 2);
+>>>>>>> Stashed changes
 } 
 
 // Função para realizar modulo.
@@ -481,6 +485,7 @@ float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
     return (h/2)*s;
 }
 
+<<<<<<< Updated upstream
 void gaussLegendre(float ll, float ul, float n, int p, int manualWay, int precision)
 {
     double e1 = (ul-ll)/2;
@@ -619,6 +624,71 @@ void gaussLegendre(float ll, float ul, float n, int p, int manualWay, int precis
         }
     }
     cout << " ]" <<" = "<< integ << "\n\n";
+=======
+void bissecao (float a, float b){
+    //ALTERE AS VARIAVEIS A SEGUIR DE ACORDO COM OS DADOS FORNECIDOS -------------------------------------------------------------------------------------------------------------------
+    double toler = 0.01;
+    int iter_max = 10;
+    // double a = 0;
+    // double b = 1;
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+    int iter = 0;
+
+
+
+	double x = 0;
+
+	double fa = func(a);
+	double fb = func(b);
+	double fx = func(x);
+
+
+
+	if (func(a)*func(b) > 0) {
+		std::cout << "funcao nao muda de sinal neste intervalo" << std::endl;
+		system("PAUSE");
+		exit(1);
+	}
+	double deltaX = modulo(b - a);
+
+	std::cout << "iter\ta\t\tFa\t\tb\t\tFb\t\tx\t\tFx\t\tdeltaX" << std::endl;
+	std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+	std::cout.precision(5);
+	std::cout.setf(std::ios::fixed);
+
+	while (1) {
+		deltaX /= 2.0;
+		x = (a + b)/2.0;
+		fx = func(x);
+
+		std::cout << iter << " \t" << a << " \t" << fa << " \t" << b << " \t" << fb << " \t" << x << " \t" << fx << " \t" << deltaX << std::endl;
+
+		if ((/*(modulo(fx) <= toler) && */(deltaX <= toler)) || (iter >= iter_max)) break;
+
+		if (fa*fx > 0) {
+            a = x;
+            fa = fx;
+		}
+		else {
+            b = x;
+            fb = fx;
+		}
+		iter++;
+	}
+	double raiz = x;
+	if (/*modulo(func(x)) <= toler && */(deltaX <= toler)) {
+		std::cout << std::endl << "Raiz encontrada: " << raiz << std::endl;
+		std::cout << "Iter: " << iter << "\n\n";
+
+	}
+
+	else {
+		std::cout << "A raiz nao pode ser encontrada com os criterios fornecidos." << std::endl;
+		std::cout << "Iter: " << iter << "\n\n";
+	}
+>>>>>>> Stashed changes
 
 }
 
@@ -644,6 +714,7 @@ int main()
     int precision = p;
     p = pow(10, (p));
     char type;
+<<<<<<< Updated upstream
 
     cout << "\n" 
     <<"Qual programa sera utilizado ? " 
@@ -670,6 +741,26 @@ int main()
         default: std::cerr << "Invalid type\n";
     }
     }
+=======
+    cout << "\n" <<"Qual programa sera utilizado ? " << "\n\n" << "1: 1/3 de simpson" << "\n" 
+    << "2: Trapezio" << "\n" << "3: 3/8 de simpsons" << "\n" << "4: Bissecao" << "\n";
+  std::cin >> type;
+  switch (type) {
+    case '1':
+      simpson_(lower_limit, upper_limit, n, p, manualWay, precision);
+      break;
+    case '2':
+      trapezio(lower_limit, upper_limit, n, p,manualWay, precision);
+      break;
+    case '3':
+      simpsons(lower_limit, upper_limit, n, p,manualWay, precision);
+      break;
+    case '4':
+      bissecao(lower_limit, upper_limit);
+      break;
+    default: std::cerr << "Invalid type\n";
+  }
+>>>>>>> Stashed changes
 
     return 0;
 }
