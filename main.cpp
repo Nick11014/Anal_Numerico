@@ -22,7 +22,11 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
+<<<<<<< Updated upstream
     return (x*x*x)-2*x-5;
+=======
+    return 2*pow(x,3)-7*pow(x,2)+4*x+4;
+>>>>>>> Stashed changes
 } 
 
 // Função para realizar modulo.
@@ -32,12 +36,12 @@ double modulo(double x) {
 }
 
 double derivada(double x) {
-    return 3*pow(x,2)-2;
+    return 6*pow(x,2)-14*x+4;
 }
 
 
 double derivada2(double x) {
-    return 6*x;
+    return 12*x-14;
 }
 
 // Function for approximate integral
@@ -712,7 +716,7 @@ void bissecao (float a, float b, double p, int precision){
 
 }
 
-void secante (float a, float b, int p, int precision) {
+void secante (float a, float b, double p, int precision) {
     double epsilon =2.2204e-16;
 
     float a0 = a;
@@ -784,7 +788,7 @@ void secante (float a, float b, int p, int precision) {
     std::cout << raiz << std::endl << "Numero de iteracoes: " << iter << std::endl;
 }
 
-void pegaso (float a, float b, int p, int precision) {
+void pegaso (float a, float b, double p, int precision) {
     float a0 = a;
     float b0 = b;
     double toler = 0.01;
@@ -947,6 +951,7 @@ void newtowRaphson(double p, int precision){
   }
 }
 
+<<<<<<< Updated upstream
 void regulaFalsi(float a, float b, int p, int precision) {
 
   double a0 = a;
@@ -995,6 +1000,49 @@ void regulaFalsi(float a, float b, int p, int precision) {
     b = roundf(b * p) / p;
     fb = fx;
     fb = roundf(fb * p) / p;
+=======
+void shroder(double p, int precision) {
+    // ALTERE AS VARIAVEIS A SEGUIR -----------------------------------------------------------------------------------------------------------------
+
+  double toler = 0.01;
+  double x = 6.5;
+  int iter_max = 10;
+  int m = 2;
+
+//------------------------------------------------------------------------------------------------------------------------------------
+
+  double epsilon =2.2204e-16;
+  double deltaX = 1 + toler;
+  int iter = 0;
+  double raiz = 0;
+
+  std::cout << "k\tx_k\t\tFx_k\t\tDfx_k\t\tdeltaX_k" << std::endl;
+  std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+  std::cout.precision(precision);
+  std::cout.setf(std::ios::fixed);
+
+
+  float fx = 0;
+  float dfx = 0;
+
+  while(1) {
+    fx = func(x);
+    fx = roundf(fx * p) / p;
+    dfx = derivada(x);
+    dfx = roundf(dfx * p) / p;
+
+
+    std::cout << iter << " \t" << x << " \t\t" << fx << " \t\t" << dfx << " \t\t" << deltaX << std::endl;
+
+    if (((modulo(deltaX)<= toler) && (modulo(fx) <= toler)) || (modulo(dfx) < epsilon) ||(iter >= iter_max)) break;
+
+
+    deltaX = m*fx/dfx;
+    deltaX = roundf(deltaX * p) / p;
+    x -= deltaX;
+    x = roundf(x*p) / p;
+
+>>>>>>> Stashed changes
     iter++;
   }
 
@@ -1007,10 +1055,15 @@ void regulaFalsi(float a, float b, int p, int precision) {
   else {
     std::cout << "A raiz nao pode ser encontrada." << std::endl;
   }
+<<<<<<< Updated upstream
   system("PAUSE");
 }
 
 
+=======
+}
+
+>>>>>>> Stashed changes
 // Driver program
 int main()
 {
@@ -1080,9 +1133,15 @@ int main()
         case 'a':
             shroder(p, precision);
             break;
+<<<<<<< Updated upstream
         case 'b':
             regulaFalsi(lower_limit, upper_limit, p, precision);
             break;
+=======
+         case 'b':
+            shroder(p, precision);
+            break;    
+>>>>>>> Stashed changes
         default: std::cerr << "Invalid type\n";        
     }
 
