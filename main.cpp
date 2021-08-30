@@ -3,6 +3,8 @@
 #include <iostream>
 #include <math.h>
 #include <iomanip>
+#include <vector>
+
 using namespace std;
 
 #define PI 3.1415926535897932384626433832795
@@ -479,6 +481,147 @@ float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
     return (h/2)*s;
 }
 
+void gaussLegendre(float ll, float ul, float n, int p, int manualWay, int precision)
+{
+    double e1 = (ul-ll)/2;
+    double e2 = (ll+ul)/2;
+
+    vector<double> A(n);
+    vector<double> t(n);
+    vector<double> x(n);
+    vector<double> y(n);
+
+    if (n == 1) {
+        A[0] = 2;
+
+        t[0] = 0;
+    }
+
+    if (n == 2) {
+        A[0] = A[1] = 1;
+
+        t[0] = -0.57735;
+        t[1] = -t[0];
+    }
+
+    if (n == 3) {
+        A[0] = A[2] = 0.55556;
+        A[1] = 0.88889;
+
+        t[0] = -0.77460;
+        t[1] = 0;
+        t[2] = -t[0];
+    }
+
+    if (n == 4) {
+        A[0] = A[3] = 0.34785;
+        A[1] = A[2] = 0.65215;
+
+        t[0] = -0.86114;
+        t[1] = -0.33998;
+        t[2] = -t[1];
+        t[3] = -t[0];
+    }
+
+    if (n == 5) {
+        A[0] = A[4] = 0.23693;
+        A[1] = A[3] = 0.47863;
+        A[2] = 0.56889;
+
+        t[0] = -0.90618;
+        t[1] = -0.53847;
+        t[2] = 0;
+        t[3] = -t[1];
+        t[4] = -t[0];
+
+    }
+
+
+    if(manualWay == 0) {
+        // Calculating values of x and f(x)
+        for (int i = 0; i < n; i++)
+        {
+            x[i] = e1*t[i] + e2;
+            y[i] = func(x[i]);
+        }
+    }
+    else if(manualWay == 1) {
+        // Reading points
+        for (int i = 0; i < n; i++)
+        {
+            cout << "Ponto " << i << ": ";
+            cin >> x[i] >> y[i];
+        }
+    }
+
+    double integ = 0;
+
+    cout << "i\t\tti\t\txi\t\tyi\t\tAi\n";
+    cout << "-----------------------------------------------------------------------------\n";
+
+    for (int i = 0; i < n; i++) {
+        integ += A[i]*y[i];
+        cout << i+1 << "\t\t";
+        cout.setf(ios::showpoint);
+        cout.setf(ios::fixed);
+        cout.precision(5);
+        cout << t[i] << " \t" << x[i] << " \t" << y[i] << " \t" << A[i] << endl;
+        cout << noshowpoint;
+    }
+
+    integ *= e1;
+
+    cout << endl << "Valor da integral: " << integ << endl;
+
+
+    std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
+
+    std::cout << "CALCULO DO FATOR ERRO: " << "\n\n";
+    // std::cout << "\t" << "(-1)*(" << ul <<"-" << ll <<")^(3)"<<"\n";
+    //std::cout << "\t" << "-----------------" <<"   =  " << fator_erro << "\n";
+    // std::cout << "\t" << "12*" << n << "^(2)" <<"\n\n\n\n";
+
+    std::cout << "CALCULO DO RESULTADO FINAL(INTEGRACAO): " << "\n";
+    cout << "\n";
+    cout << "Formula: " << "\n";
+    cout << "(ul - ll)/2" << "[ ";
+    for (int i = 0; i < n; i++)
+    {
+        if(i < n-1){
+            cout << "(A[" << i << "]" << " * " << "Y[" << i << "])" << " + ";
+        }
+        else{
+            cout << "(A[" << i << "]" << " * " << "Y[" << i << "])";
+        }
+    }
+    cout << " ]" << "\n\n";
+    
+    cout << (ul - ll) << "/2" << "[ ";
+    for (int i = 0; i < n; i++)
+    {
+        if(i < n-1){
+            cout << "(" << A[i] << " * " << y[i] << ")" << " + ";
+        }
+        else{
+            cout << "(" << A[i] << " * " << y[i] << ")";
+        }
+    }
+    cout << " ]" << "\n";
+
+    cout << (ul - ll)/2 << "[ ";
+    for (int i = 0; i < n; i++)
+    {
+        if(i < n-1){
+            cout << "(" << A[i] * y[i] << ")" << " + ";
+        }
+        else{
+            cout << "(" << A[i] *  y[i] << ")";
+        }
+    }
+    cout << " ]" <<" = "<< integ << "\n\n";
+
+}
+
 // Driver program
 int main()
 {
@@ -491,7 +634,7 @@ int main()
     cin >> lower_limit;
     cout << "Entre superior inferior de integracao: ";
     cin >> upper_limit;
-    cout << "Entre numero de sub intervalos: ";
+    cout << "Entre numero de sub intervalos ou numero de pontos no caso de Gauss Legendre: ";
     cin >> n;
     cout << "Precisao de casas decimais: ";
     cin >> p;
@@ -501,21 +644,32 @@ int main()
     int precision = p;
     p = pow(10, (p));
     char type;
-    cout << "\n" <<"Qual programa sera utilizado ? " << "\n\n" << "1: 1/3 de simpson" << "\n" 
-    << "2: Trapezio" << "\n" << "3: 3/8 de simpsons" << "\n";
-  std::cin >> type;
-  switch (type) {
-    case '1':
-      simpson_(lower_limit, upper_limit, n, p, manualWay, precision);
-      break;
-    case '2':
-      trapezio(lower_limit, upper_limit, n, p,manualWay, precision);
-      break;
-    case '3':
-      simpsons(lower_limit, upper_limit, n, p,manualWay, precision);
-      break;
-    default: std::cerr << "Invalid type\n";
-  }
+
+    cout << "\n" 
+    <<"Qual programa sera utilizado ? " 
+    << "\n\n" 
+    << "1: 1/3 de simpson" << "\n" 
+    << "2: Trapezio" << "\n" 
+    << "3: 3/8 de simpsons" << "\n"
+    << "4: Gauss Legendre" << "\n\n";
+    
+    while(std::cin >> type){
+    switch (type) {
+        case '1':
+            simpson_(lower_limit, upper_limit, n, p, manualWay, precision);
+            break;
+        case '2':
+            trapezio(lower_limit, upper_limit, n, p,manualWay, precision);
+            break;
+        case '3':
+            simpsons(lower_limit, upper_limit, n, p,manualWay, precision);
+            break;
+        case '4':
+            gaussLegendre(lower_limit, upper_limit, n, p,manualWay, precision);
+            break;
+        default: std::cerr << "Invalid type\n";
+    }
+    }
 
     return 0;
 }
