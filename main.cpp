@@ -702,6 +702,147 @@ void bissecao (float a, float b, double p, int precision){
 
 }
 
+void secante (float a, float b, int p, int precision) {
+    double epsilon =2.2204e-16;
+
+    float a0 = a;
+    float b0 = b;
+    double toler = 0.01;
+    int iter_max = 10;
+
+    float x = 0;
+    int iter = 0;
+    float raiz = 0;
+
+    float fa = func(a);
+    fa = roundf(fa * p) / p;
+    float fb = func(b);
+    fb = roundf(fb * p) / p;
+    float fx = 0;
+
+    float deltaX = 0;
+    std::cout << "iter\ta\t\tFa\t\tb\t\tFb\t\tx\t\tFx\t\tdeltaX" << std::endl;
+    std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+    std::cout.precision(precision);
+    std::cout.setf(std::ios::fixed);
+
+    while(1) {
+        deltaX = fb*(b-a)/(fb-fa);
+        deltaX = roundf(deltaX * p) / p;
+        x = b - deltaX;
+        fx = func(x);
+
+        if(fa < 0 && fb < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+        }
+        else if(fa < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+        }
+        else if(fb < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+        } 
+        else if(fx < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t" << deltaX << std::endl;
+        } else
+        std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+
+        if (((modulo(deltaX)<= toler) || (modulo(fx) <= toler)) || (modulo(fb-fx) < epsilon) || (iter >= iter_max))
+        break;
+
+        a = b;
+        fa = fb;
+        b = x;
+        fb = fx;
+        iter++;
+    }
+
+    raiz = x;
+
+    if ((modulo(deltaX) <= toler) || (modulo(fx) <= toler)) {
+        if ((raiz >= a0) && (raiz <= b0)) {
+            std::cout << "Raiz encontrada: ";
+        }
+        else {
+            std::cout << "Raiz encontrada fora do intervalo: ";
+        }
+    }
+    else {
+        std::cout << "A raiz nao pode ser encontrada." << std::endl;
+        exit(0);
+    }
+
+    std::cout << raiz << std::endl << "Numero de iteracoes: " << iter << std::endl;
+}
+
+void pegaso (float a, float b, int p, int precision) {
+    float a0 = a;
+    float b0 = b;
+    double toler = 0.01;
+    int iter_max = 10;
+
+    float x = 0;
+    int iter = 0;
+    float raiz = 0;
+
+    float fa = func(a);
+    fa = roundf(fa * p) / p;
+    float fb = func(b);
+    fb = roundf(fb * p) / p;
+    float fx = 0;
+
+    float deltaX = 0;
+
+    std::cout << "iter\ta\t\tFa\t\tb\t\tFb\t\tx\t\tFx\t\tdeltaX" << std::endl;
+    std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
+    std::cout.precision(precision);
+    std::cout.setf(std::ios::fixed);
+
+    while(1) {
+        deltaX = fb*(b-a)/(fb-fa);
+        deltaX = roundf(deltaX * p) / p;
+        x = b - deltaX;
+        fx = func(x);
+
+        if(fa < 0 && fb < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+        }
+        else if(fa < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+        }
+        else if(fb < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+        } 
+        else if(fx < 0) {
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t" << deltaX << std::endl;
+        } else
+        std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+
+        if (((modulo(deltaX)<= toler) && (modulo(fx) <= toler)) || (iter >= iter_max))
+        break;
+
+        if (fb*fx < 0) {
+        a = b;
+        fa = fb;
+        }
+        else {
+        fa *= fb/(fb+fx);
+        }
+        b = x;
+        fb = fx;
+        iter++;
+    }
+
+    raiz = x;
+
+    if ((modulo(deltaX) <= toler) && (modulo(fx) <= toler)) {
+        std::cout << "Raiz encontrada: " << raiz << std::endl;
+        std::cout << "Numero de iteracoes: " << iter << std::endl;
+    }
+    else {
+        std::cout << "A raiz nao pode ser encontrada." << std::endl;
+    }
+}
+
 // Driver program
 int main()
 {
@@ -731,7 +872,11 @@ int main()
     << "2: Trapezio" << "\n" 
     << "3: 3/8 de simpsons" << "\n"
     << "4: Gauss Legendre" << "\n"
-    << "5: Bissecao" << "\n\n";
+    << "5: Bissecao" << "\n"
+    << "6: Secante" << "\n"
+    << "7: Pegaso" << "\n"
+    << "8: Halley" << "\n"
+    << "9: Newton-Raphson" << "\n\n";
 
     std::cin >> type;
     switch (type) {
@@ -750,8 +895,19 @@ int main()
         case '5':
             bissecao(lower_limit, upper_limit, p, precision);
             break;
-        default: std::cerr << "Invalid type\n";
-        
+        case '6':
+            secante(lower_limit, upper_limit, p, precision);
+            break;
+        case '7':
+            pegaso(lower_limit, upper_limit, p, precision);
+            break;
+        case '8':
+            halley(p, precision);
+            break;
+        case '9':
+            newtowRaphson(p, precision);
+            break;
+        default: std::cerr << "Invalid type\n";        
     }
 
     return 0;
