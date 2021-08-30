@@ -31,7 +31,7 @@ double modulo(double x) {
 }
 
 // Function for approximate integral
-float simpson_(float ll, float ul, int n, int p, int manualWay, int precision)
+float simpson_(float ll, float ul, int n, double p, int manualWay, int precision)
 {
     // Calculating the value of h
     float h = (ul - ll) / n;
@@ -181,7 +181,7 @@ float simpson_(float ll, float ul, int n, int p, int manualWay, int precision)
 }
 
 
-float simpsons(float ll, float ul, int n, int p, int manualWay, int precision)
+float simpsons(float ll, float ul, int n, double p, int manualWay, int precision)
 {
     // Calculating the value of h
     float h = roundf(((ul - ll) / n) * p) / p;
@@ -332,7 +332,7 @@ float simpsons(float ll, float ul, int n, int p, int manualWay, int precision)
     return res;
 }
 
-float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
+float trapezio(float ll, float ul, float n, double p, int manualWay, int precision)
 {
     // Array for storing value of x and f(x)
     float x[30], fx[30];
@@ -481,7 +481,7 @@ float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
     return (h/2)*s;
 }
 
-void gaussLegendre(float ll, float ul, float n, int p, int manualWay, int precision)
+void gaussLegendre(float ll, float ul, float n, double p, int manualWay, int precision)
 {
     double e1 = (ul-ll)/2;
     double e2 = (ll+ul)/2;
@@ -621,25 +621,25 @@ void gaussLegendre(float ll, float ul, float n, int p, int manualWay, int precis
     cout << " ]" <<" = "<< integ << "\n\n";
 }
 
-void bissecao (float a, float b, int p, int precision){
+void bissecao (float a, float b, double p, int precision){
     //ALTERE AS VARIAVEIS A SEGUIR DE ACORDO COM OS DADOS FORNECIDOS -------------------------------------------------------------------------------------------------------------------
-    double toler = 0.01;
+    float toler = 0.01;
     int iter_max = 10;
-    // double a = 0;
-    // double b = 1;
+    // float a = 0;
+    // float b = 1;
 
 //---------------------------------------------------------------------------------------------------------------------------------------------
 
     int iter = 0;
 
 
-	double x = 0;
+	float x = 0;
 
-	double fa = func(a);
+	float fa = func(a);
     fa = roundf(fa * p) / p;
-	double fb = func(b);
+	float fb = func(b);
     fb = roundf(fb * p) / p;
-	double fx = func(x);
+	float fx = func(x);
     fx = roundf(fx * p) / p;
 
 
@@ -648,7 +648,7 @@ void bissecao (float a, float b, int p, int precision){
 		system("PAUSE");
 		exit(1);
 	}
-	double deltaX = modulo(b - a);
+	float deltaX = modulo(b - a);
 
 
 	std::cout << "iter\ta\t\tFa\t\tb\t\tFb\t\tx\t\tFx\t\tdeltaX" << std::endl;
@@ -658,13 +658,9 @@ void bissecao (float a, float b, int p, int precision){
 
 	while (1) {
 		deltaX /= 2.0;
-        deltaX = roundf(deltaX * p) / p;
-        a = roundf(a * p) / p;
-        b = roundf(b * p) / p;
 		x = (a + b)/2.0;
         x = roundf(x * p) / p;
 		fx = func(x);
-        fx = roundf(fx * p) / p;
 
 
         if(fa < 0 && fx > 0) {
@@ -680,7 +676,7 @@ void bissecao (float a, float b, int p, int precision){
 	        std::cout << iter << " \t" << a << " \t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t" << deltaX << std::endl;
         }
 
-		if ((/*(modulo(fx) <= toler) && */(deltaX <= toler)) || (iter >= iter_max)) break;
+		if (((modulo(fx) <= toler) && (deltaX <= toler)) || (iter >= iter_max)) break;
 
 		if (fa*fx > 0) {
             a = x;
@@ -693,7 +689,7 @@ void bissecao (float a, float b, int p, int precision){
 		iter++;
 	}
 	double raiz = x;
-	if (/*modulo(func(x)) <= toler && */(deltaX <= toler)) {
+	if (modulo(func(x)) <= toler && (deltaX <= toler)) {
 		std::cout << std::endl << "Raiz encontrada: " << raiz << std::endl;
 		std::cout << "Iter: " << iter << "\n\n";
 
@@ -712,7 +708,7 @@ int main()
     float lower_limit = 0; // Lower limit
     float upper_limit = 0; // Upper limit
     int n = 0;               // Number of interval
-    int p = 0;
+    double p = 0;
     int manualWay = 0;
     cout << "Entre limite inferior de integracao: ";
     cin >> lower_limit;
