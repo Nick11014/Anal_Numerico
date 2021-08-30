@@ -22,11 +22,7 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
-<<<<<<< Updated upstream
-    return (x*x*x)-2*x-5;
-=======
     return 2*pow(x,3)-7*pow(x,2)+4*x+4;
->>>>>>> Stashed changes
 } 
 
 // Função para realizar modulo.
