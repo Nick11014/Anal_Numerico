@@ -19,7 +19,7 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
-    return exp(x*x);
+    return cbrt(x);
 } 
 
 // Função para realizar modulo.
@@ -104,7 +104,7 @@ float simpson_(float ll, float ul, int n, int p, int manualWay, int precision)
     std::cout <<"O valor de h e: "<< h << "\n";
     std::cout << "O valor da integracao e: " << res << "\n";
     std::cout << "Fator erro: " << fator_erro << endl << endl;
-    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA NO PONTO THETA PARA ACHAR O ERRO!!\n\n\n";
+    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA QUARTA NO PONTO THETA (De maior valor da funcao derivada) PARA ACHAR O ERRO!!\n\n\n";
 
     std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
 
@@ -256,7 +256,7 @@ float simpsons(float ll, float ul, int n, int p, int manualWay, int precision)
     std::cout <<"O valor de h e: "<< h << "\n";
     std::cout << "O valor da integracao e: " << res << "\n";
     std::cout << "Fator erro: " << fator_erro << endl << endl;
-    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA NO PONTO THETA PARA ACHAR O ERRO!!\n\n\n";
+    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA QUARTA NO PONTO THETA (De maior valor da funcao derivada) PARA ACHAR O ERRO!!\n\n\n";
 
     std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
 
@@ -330,13 +330,8 @@ float simpsons(float ll, float ul, int n, int p, int manualWay, int precision)
     return res;
 }
 
-<<<<<<< Updated upstream
-float trapezio(float ll, float ul, float n, int p,int manualWay)
-{   
-=======
 float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
 {
->>>>>>> Stashed changes
     // Array for storing value of x and f(x)
     float x[30], fx[30];
 
@@ -419,7 +414,7 @@ float trapezio(float ll, float ul, float n, int p, int manualWay, int precision)
     std::cout <<"O valor de h e: "<< h << "\n";
     std::cout << "O valor da integracao e: " << Final_Result << "\n";
     std::cout << "Fator erro: " << fator_erro << endl << endl;
-    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA NO PONTO THETA PARA ACHAR O ERRO!!\n\n\n";
+    cout << "AINDA FALTA MULTIPLICAR O FATOR DO ERRO PELA DERIVADA SEGUNDA NO PONTO THETA (De maior valor da funcao derivada) PARA ACHAR O ERRO!!\n\n\n";
 
     std::cout << "      ************************|RASCUNHO|************************" << "\n\n";
 
@@ -511,16 +506,6 @@ int main()
   std::cin >> type;
   switch (type) {
     case '1':
-<<<<<<< Updated upstream
-        simpson_(lower_limit, upper_limit, n, p, manualWay);
-        break;
-    case '2':
-        trapezio(lower_limit, upper_limit, n, p,manualWay);
-        break;
-    case '3':
-        simpsons(lower_limit, upper_limit, n, p,manualWay);
-         break;
-=======
       simpson_(lower_limit, upper_limit, n, p, manualWay, precision);
       break;
     case '2':
@@ -529,7 +514,6 @@ int main()
     case '3':
       simpsons(lower_limit, upper_limit, n, p,manualWay, precision);
       break;
->>>>>>> Stashed changes
     default: std::cerr << "Invalid type\n";
   }
 
