@@ -22,7 +22,7 @@ using namespace std;
 // Function to calculate f(x)
 float func(float x)
 {
-    return 3*pow(x,3)-13*x+7; 
+    return exp(x)*cos(x)-4*sin(x); 
 } 
 
 // Função para realizar modulo.
@@ -32,7 +32,7 @@ double modulo(double x) {
 }
 
 double derivada(double x) {
-    return 9*pow(x,2)-13;
+    return 6*pow(x,2)-14*x+4;
 }
 
 
@@ -570,7 +570,7 @@ void gaussLegendre(float ll, float ul, float n, double p, int manualWay, int pre
     cout << "-----------------------------------------------------------------------------\n";
 
     for (int i = 0; i < n; i++) {
-        integ += A[i]*y[i];
+        integ += roundf(A[i]*y[i]*p) / p;
         cout << i+1 << "\t\t";
         cout.setf(ios::showpoint);
         cout.setf(ios::fixed);
@@ -580,6 +580,7 @@ void gaussLegendre(float ll, float ul, float n, double p, int manualWay, int pre
     }
 
     integ *= e1;
+    integ = roundf(integ*p) / p;
 
     cout << endl << "Valor da integral: " << integ << endl;
 
@@ -674,16 +675,16 @@ void bissecao (float a, float b, double p, int precision){
 
 
         if(fa < 0 && fx > 0) {
-            std::cout << iter << " \t" << a << " \t\t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+            std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
         }
         else if(fa < 0) {
-		    std::cout << iter << " \t" << a << " \t\t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t" << deltaX << std::endl;
+		    std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t" << deltaX << std::endl;
         }
         else if(fx > 0) {
-		    std::cout << iter << " \t" << a << " \t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
+		    std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
         }
         else {
-	        std::cout << iter << " \t" << a << " \t" << fa << " \t" << b << " \t\t" << fb << " \t\t" << x << " \t\t" << fx << " \t" << deltaX << std::endl;
+	        std::cout << iter << " \t" << a << " \t\t" << fa << " \t\t" << b << " \t\t" << fb << " \t" << x << " \t\t" << fx << " \t\t" << deltaX << std::endl;
         }
 
 		if (((modulo(fx) <= toler) && (deltaX <= toler)) || (iter >= iter_max)) break;
@@ -1017,7 +1018,9 @@ void shroder(double p, int precision) {
     // ALTERE AS VARIAVEIS A SEGUIR -----------------------------------------------------------------------------------------------------------------
 
   double toler = 0.01;
-  double x = 6.5;
+  double x = 0;
+  cout << "Entre X0: ";
+  cin >> x;
   int iter_max = 10;
   int m = 2;
 
