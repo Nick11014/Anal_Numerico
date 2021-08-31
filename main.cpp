@@ -17,12 +17,12 @@ using namespace std;
 
 //pow(2.7182818, (2*x)     :Potencia
 //0.03*pow(x, 3)-2*x+8*sin(x + 2);
-
+//3*pow(x,3)-13*x+7; 0.03*pow(x,3)-2*x+8*sin(x+2)
 
 // Function to calculate f(x)
 float func(float x)
 {
-    return 2*pow(x,3)-7*pow(x,2)+4*x+4;
+    return 3*pow(x,3)-13*x+7; 
 } 
 
 // Função para realizar modulo.
@@ -32,12 +32,12 @@ double modulo(double x) {
 }
 
 double derivada(double x) {
-    return 6*pow(x,2)-14*x+4;
+    return 9*pow(x,2)-13;
 }
 
 
 double derivada2(double x) {
-    return 12*x-14;
+    return 18*x;
 }
 
 // Function for approximate integral
@@ -855,7 +855,7 @@ void pegaso (float a, float b, double p, int precision) {
 
 void halley(double p, int precision){
   double epsilon = 2.2204e-16;
-  double toler = 0.00001;
+  double toler = 0.01;
   double deltaX = 1+toler;
   int iter_max = 10;
   int iter = 0;
@@ -867,7 +867,9 @@ void halley(double p, int precision){
   std::cout.precision(precision);
   std::cout.setf(std::ios::fixed);
 
-  double x = 2;
+  double x = 0;
+  cout << "Entre X0: ";
+  cin >> x;
   double fx = 0;
   double dfx = 0;
   double dfx2 = 0;
@@ -904,7 +906,7 @@ void halley(double p, int precision){
 
 void newtowRaphson(double p, int precision){
   double epsilon =2.2204e-16;
-  double toler = 0.00001;
+  double toler = 0.01;
   double deltaX = 1+toler;
   int iter_max = 10;
   int iter = 0;
@@ -913,10 +915,12 @@ void newtowRaphson(double p, int precision){
 
   std::cout << "k\tx_k\t\tFx_k\t\tDfx_k\t\tdeltaX_k" << std::endl;
   std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
-  std::cout.precision(precision-1);
+  std::cout.precision(precision);
   std::cout.setf(std::ios::fixed);
 
-  double x = 2;
+  double x = 0;
+  cout << "Entre X0: ";
+  cin >> x;
   double fx = 0;
   double dfx = 0;
 
@@ -925,12 +929,12 @@ void newtowRaphson(double p, int precision){
     fx = roundf(fx * p) / p;
     dfx = derivada(x);
     dfx = roundf(dfx * p) / p;
-    deltaX = fx/dfx;
 
     std::cout << iter << " \t" << x << " \t" << fx << " \t" << dfx << " \t" << deltaX << std::endl;
 
     if (((modulo(deltaX)<= toler) && (modulo(fx) <= toler)) || (modulo(dfx) < epsilon) ||(iter >= iter_max)) break;
 
+    deltaX = fx/dfx;
     x -= deltaX;
     x = roundf(x*p) / p;
     iter++;
@@ -951,7 +955,7 @@ void regulaFalsi(float a, float b, int p, int precision) {
 
   double a0 = a;
   double b0 = b;
-  double toler = 1e-3;
+  double toler = 0.01;
   int iter_max = 10;
 
   double x = 0;
@@ -972,7 +976,7 @@ void regulaFalsi(float a, float b, int p, int precision) {
 
   std::cout << "iter\ta\t\tFa\t\tb\t\tFb\t\tx\t\tFx\t\tdeltaX" << std::endl;
   std::cout << "-------------------------------------------------------------------------------------------------------------------\n";
-  std::cout.precision(precision-1);
+  std::cout.precision(precision);
   std::cout.setf(std::ios::fixed);
 
   while(1) {
@@ -995,7 +999,18 @@ void regulaFalsi(float a, float b, int p, int precision) {
     b = roundf(b * p) / p;
     fb = fx;
     fb = roundf(fb * p) / p;
+    iter++;
   }
+    raiz = x;
+
+  if ((modulo(deltaX) <= toler) && (modulo(fx) <= toler)) {
+    std::cout << "Raiz encontrada: " << raiz << std::endl;
+    std::cout << "Numero de iteracoes: " << iter << std::endl;
+  }
+  else {
+    std::cout << "A raiz nao pode ser encontrada." << std::endl;
+  }
+  
 }
 
 void shroder(double p, int precision) {
@@ -1055,27 +1070,11 @@ void shroder(double p, int precision) {
 
 // Driver program
 int main()
-{
-    float lower_limit = 0; // Lower limit
-    float upper_limit = 0; // Upper limit
-    int n = 0;               // Number of interval
-    double p = 0;
-    int manualWay = 0;
-    cout << "Entre limite inferior de integracao: ";
-    cin >> lower_limit;
-    cout << "Entre superior inferior de integracao: ";
-    cin >> upper_limit;
-    cout << "Entre numero de sub intervalos ou numero de pontos no caso de Gauss Legendre: ";
-    cin >> n;
-    cout << "Precisao de casas decimais: ";
-    cin >> p;
-    cout << "Modo manual(true = 1 or false = 0): ";
-    cin >> manualWay;
-
-    int precision = p;
-    p = pow(10, (p));
+{   
     char type;
-    cout << "\n" 
+    cout << "NAO ESQUECER DE ALTERAR A FUNCAO UTILIZADA E SUAS DERIVADAS!!\n";
+    cout << "Halley  //  Newton Raphson   e   Shroder possuem derivada\n\n";
+    cout << "\n"
     <<"Qual programa sera utilizado ? " 
     << "\n\n" 
     << "1: 1/3 de simpson" << "\n" 
@@ -1091,6 +1090,35 @@ int main()
     << "b: Regula Falsi" << "\n\n";
 
     std::cin >> type;
+
+    float lower_limit = 0; // Lower limit
+    float upper_limit = 0; // Upper limit
+    int n = 0;               // Number of interval
+    double p = 0;
+    int manualWay = 0;
+    // if(type == 'b'|| type == '9'){
+    //     cout << "ADICIONAR +1 NA PRECISAO DESEJADA!!\n\n\n";
+    // }
+    if(type == '8' || type == '9' || type =='a'){
+        cout << "Precisao de casas decimais: ";
+        cin >> p;
+    }
+    else{
+        cout << "Entre limite inferior de integracao: ";
+        cin >> lower_limit;
+        cout << "Entre superior inferior de integracao: ";
+        cin >> upper_limit;
+        cout << "Entre numero de sub intervalos ou numero de pontos no caso de Gauss Legendre: ";
+        cin >> n;
+        cout << "Precisao de casas decimais: ";
+        cin >> p;
+        cout << "Modo manual(true = 1 or false = 0): ";
+        cin >> manualWay;
+    }
+
+    int precision = p;
+    p = pow(10, (p));
+
     switch (type) {
         case '1':
             simpson_(lower_limit, upper_limit, n, p, manualWay, precision);
